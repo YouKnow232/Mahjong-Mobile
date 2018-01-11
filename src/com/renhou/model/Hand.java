@@ -3,21 +3,21 @@ package com.renhou.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Hand {
+class Hand {
     private ArrayList<Tile> hiddenHand;
     private ArrayList<Tile[]> openMelds;
     
-    public Hand(Tile[] tiles) {
+    Hand(Tile[] tiles) {
         hiddenHand = new ArrayList<Tile>(Arrays.asList(tiles));
         openMelds = new ArrayList<Tile[]>();
     }
     
-    public void addMeld(Tile[] meld) {
+    void addMeld(Tile[] meld) {
         //TODO: remove select tiles from hiddenHand
         openMelds.add(meld);
     }
     
-    public void replace(Tile old, Tile replacement) {
+    void replace(Tile old, Tile replacement) {
         //TODO
     }
     
@@ -29,8 +29,7 @@ public class Hand {
         return (Tile[][]) openMelds.toArray();
     }
     
-    //TODO
-    //Cleanup
+    //TODO: Test code, pls delete later
     public static void main(String[] args) {
         int[] arr = new int[] {3,2,1,5,4,6};
         Arrays.sort(arr);
