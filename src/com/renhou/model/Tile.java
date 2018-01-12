@@ -1,8 +1,8 @@
 package com.renhou.model;
 
 class Tile implements Comparable<Tile> {
-       private TileType type;
-       private int rank;
+       private final TileType type;
+       private final int rank;
        
        Tile(TileType type, int rank) {
     	   this.type = type;

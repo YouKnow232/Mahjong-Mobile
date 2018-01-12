@@ -1,5 +1,5 @@
 package com.renhou.model;
 
 public enum TileType {
-	Man, Pin, Sou, Wind, Dragon;
+	MAN, PIN, SOU, WIND, DRAGON;
 }
