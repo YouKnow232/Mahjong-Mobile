@@ -1,0 +1,173 @@
+Special:
+    Riichi (Ready hand):
+    value: 1
+    tags: HANDCLOSED
+    
+    Chiitoitsu (Seven pairs):
+    value: 2
+    tags: ALLPAIRS, HANDCLOSED
+    
+    Nagashi Mangan:
+    Checks will need to be made during the draw gamestate
+    value: mangan always
+    
+Based on Luck:
+    Tsumo (Self-pick):
+    value: 1
+    tags: HANDCLOSED
+    
+    Ippatsu (One-shot):
+    Riichi only
+    value: 1
+    tags: HANDCLOSED
+    
+    Haitei (Last tile from the wall):
+    value: 1
+    
+    Houtei (Last discard):
+    value: 1
+    
+    Rinshan (Dead wall draw):
+    value: 1
+    
+    Chankan (Robbing a quad):
+    value: 1
+    
+    Double riichi (Double-ready):
+    value: 2
+    overrides: riichi
+    tags: HANDCLOSED
+    
+Based on Sequences:
+    Pinfu (No-points hand):
+    derived from fu tally
+    value: 1
+    tags: some implicit tags exist such as HANDCHII
+    
+    Iipeikou (One set of identical sequences):
+    Closed only
+    value: 1
+    tags: at least 1 pair of MELDSAMERANK and MELDSAMESUIT
+    
+    Sanshoku Doujun (Three color straight):
+    value: 2, 1
+    tags: at least 3 MELDSAMERANK
+    
+    Ittsuu (Straight):
+    value: 2, 1
+    tags: MELDSTRAIGHT, MELDSAMESUIT for all 3 melds
+    
+    Ryanpeikou (Two sets of identical sequences):
+    value: 3
+    tags: 2 distinct pairs of MELDSAMERANK, MELDSAMESUIT (no overlapping melds)
+    overrides: Iipeikou, Chitoitsu
+    
+Based on triplets/quads:
+    Toitoi (All triplet hand):
+    Open only *Overridden when closed
+    value: 2
+    tags: HANDPON, HANDKAN, or just no MELDCHI tags exist
+    
+    San ankou(Three closed triplets):
+    value: 2
+    tags: 3 groups of MELDCLOSED and MELDPON/MELDKAN
+    
+    Sanshoku Doukou (Three color triplets):
+    value: 2
+    tags: at least 3 groups of MELDSAMERANK, MELDPON
+    
+    San Kantsu (Three kans):
+    value: 2
+    tags: 3 MELDKAN
+    
+Based on terminals or honors:
+    Tanyao (All simples):
+    value: 1
+    tags: HANDSIMPLES
+    
+    Yakuhai (Honor tiles):
+    Dependant on seat, round winds
+    value: 1 per
+    tags: 
+    
+    Chanta (Terminal or honor in each set):
+    value: 2, 1
+    tags: no MELDSIMPLES and no PAIRSIMPLE
+    
+    Junchan (Terminal in each set):
+    value: 3, 2
+    tags: All melds have MELD1TERMINAL/MELDTERMINALS and pair has PAIRTERMINALS
+    
+    Honrou (All terminals and honors):
+    value: 2
+    tags: All melds have MELDTERMINALS/MELDHONORS and pair has PAIRTERMINALS/PAIRHONORS
+    
+    Shousangen (Little three dragons):
+    value: 2
+    tags: 2 MELDYAKUHAI with suits being dragons, and pair having PAIRYAKUHAI with suit being dragon
+    
+Based on suits:
+    Honittsu (Half-flush)
+    value: 3, 2
+    tags: Has two of either HANDNOMAN, HANDNOPIN, HANDNOSOU
+    
+    Chinittsu (Flush):
+    value: 6, 5
+    tags: Has either HANDMAN, HANDPIN, or HANDSOU
+    
+Yakuman:
+    Kokushi musou (Thirteen orphans):
+    value: yakuman, double on 13-sided wait
+    tags: KOKUSHI, double if a copy of the wait was already in the hand
+    
+    Suu ankou (Four concealed triplets):
+    value: yakuman, double if single wait
+    tags: 4 groups of MELDPON/MELDKAN and MELDCLOSED, double if wait forms the pair
+    
+    Daisangen (Big three dragons):
+    value: yakuman
+    tags: 3 MELDYAKUHAI each with the dragon type
+    
+    Shousuushi (Little four winds):
+    value: yakuman
+    tags: 3 MELDHONORS each with a wind type and pair has PAIRHONOR with a wind type
+    
+    Daisuushi (Big four winds):
+    value: Double yakuman
+    tags: 4 MELDHONORS each with a wind type
+    
+    Tsuuiisou (All honors):
+    value: yakuman
+    tags: 4 MELDHONORS, PAIRHONORS
+    
+    Chinroutou (All terminals):
+    value: yakuman
+    tags: 4 MELDTERMINALS, PAIRTERMINALS
+    
+    Ryuuiisou (All green):
+    value: yakuman
+    tags: ?????????
+    
+    Chuuren poutou (Nine gates) / Junsei chuuren poutou (9-sided wait):
+    value: yakuman, double if 9-sided wait
+    tags: exact hand composition of 111-2-3-4-5-6-7-8-999 + another in the same suit, if meldConfig() returns 9 different configurations then you've probably got this, double if wait is part of the double/quad
+    
+    Suu kantsu (Four kans):
+    value: yakuman
+    tags: 4 MELDKAN
+    
+Opening hand Yakuman:
+    Tenhou (Heavenly Hand):
+    4 melds and a pair on the dealer's first draw
+    Closed only
+    value: limit
+    
+    Chiihou (Hand of Earth):
+    4 melds and a pair on a non-dealer's first draw
+    Closed only
+    value: limit
+    
+    Renhou (Hand of Man):
+    4 melds and a pair upon a call before that player's first draw.
+    Closed only
+    value: limit

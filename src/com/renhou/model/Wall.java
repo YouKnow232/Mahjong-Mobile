@@ -25,17 +25,17 @@ class Wall {
     public static Tile[] riichiTileSet() {
         Tile[] output = new Tile[136];
         int i = 0;
-		for (TileType t : new TileType[] {TileType.MAN, TileType.PIN, TileType.SOU}) {
-			for (int r = 1; r <= 9; r++) {
-		    	output[i++] = new Tile(t, r);
-		    }
-		}
-		for (int r = 1; r <= 4; r++)  {
-			output[i++] = new Tile(TileType.WIND, r);
-		}
-		for (int r = 1; r <= 3; r++) {
-			output[i++] = new Tile(TileType.DRAGON, r);
-		}
+    for (TileType t : new TileType[] {TileType.MAN, TileType.PIN, TileType.SOU}) {
+        for (int r = 1; r <= 9; r++) {
+            output[i++] = new Tile(t, r);
+        }
+    }
+    for (int r = 1; r <= 4; r++)  {
+        output[i++] = new Tile(TileType.WIND, r);
+    }
+    for (int r = 1; r <= 3; r++) {
+        output[i++] = new Tile(TileType.DRAGON, r);
+    }
         return output;
     }
 }

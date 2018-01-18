@@ -1,0 +1,43 @@
+25 fu always for seven pairs
+else:
+20 base fu
+
+10 fu for closed ron
+2 fu for tsumo (not counted for pinfu hands)
+2 fu for open pinfu (just to bump up to 30 fu, could be 1-10 fu)
+
+melds:
+            simple  honor/terminal
+Open pon    2       4
+Closed pon  4       8
+Open kan    8       16
+Closed kan  16      32
+
+
+waits:
+ryanmen (chi wait)      0
+shanpon (pon wait)      0
+kanchan (closed wait)   2
+penchan (edge wait)     2
+tanki (pair wait)       2
+
+e.g.
+x45x
+22x66
+4x6
+12x
+x3
+
+
+Round up to the next highest 10:
+
+
+
+point formula:
+basic points = fu*2^(2+han)
+non-dealer tsumo = 2xbasic points from dealer, 1x from the other two
+non-dealer ron = 4x discarder
+dealer tsumo = 2x from all
+dealer ron = 6x from discarder
+
+final payments are rounded up to the next highest 100.
