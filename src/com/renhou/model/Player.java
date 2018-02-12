@@ -11,7 +11,7 @@ class Player {
         hand = null;
     }
     
-    // should probably but all logic in the Game class
+    // Should probably but all logic in the Game class
     void drawHand(Tile[] tiles) {
         if (hand == null) {
             hand = new Hand(tiles);

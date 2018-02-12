@@ -1,22 +1,58 @@
 package com.renhou.model;
 
-public class HandAnalyzer { //Probably just put this in the Game class or even make it its own package in the future
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class HandAnalyzer { // Probably just put this in the Game class or even make it its own package in the future
     
     /**
-     * Groups a hand into possible meld configurations.  Should return null when no valid meld configuration.
-     *  7 pairs, and a special case for Kokushi Musou should be handled.
+     * Compiles a list of all possible melds that can be made from the given list of tiles.
+     * The melds list is given as a triplet of indices from the give list of tiles.
      * 
-     * @param h A Hand object
-     * @return 3D Tile array:
-     *             first dimension: meld arrangements
-     *             second dimension: melds/pair
-     *             third dimension: individual tiles in a meld/pair
+     * @param hand A sorted array of tiles
+     * @return A list of melds each represented by a list of 3 indices 
      */
-    private static Tile[][][] meldConfig(Hand h) {
+    
+    // TODO: Optimize by adding for loop breaks
+    // TODO: Eliminate functionally identical melds
+    //      -prune melds afterwards
+    //      -detect from a pruned hand (only prune 4th identical tile for triplets)
+    public static int[][] listMelds(Tile[] hand) { 
+        ArrayList<int[]> meldList = new ArrayList<int[]>();
         
-        //TODO: Break up a hand into complete melds
+        for (int i = 0; i < hand.length-2; i++) {
+            for (int j = i+1; j < hand.length-1; j++) {
+                
+                if (hand[i].getType() == hand[j].getType() && // Triplet detection - second tile
+                    hand[i].getRank() == hand[j].getRank()) {
+                    
+                    for (int k = j+1; k < hand.length; k++) {
+                        
+                        if (hand[j].getType() == hand[k].getType() &&   // Triplet detection - third tile
+                            hand[j].getRank() == hand[k].getRank()) {
+                            
+                            meldList.add(new int[] {i,j,k});
+                        }
+                    }
+                    
+                } else if (hand[i].getType() != TileType.WIND &&    // Sequence detection - second tile
+                           hand[i].getType() != TileType.DRAGON &&
+                           hand[i].getType() == hand[j].getType() &&
+                           hand[i].getRank() == hand[j].getRank() - 1){
+                    
+                    for (int k = j+1; k < hand.length; k++) {
+                        
+                        if (hand[j].getType() == hand[k].getType() &&   // Sequence detection - third tile
+                            hand[j].getRank() == hand[k].getRank() - 1) {
+                            
+                            meldList.add(new int[] {i,j,k});
+                        }
+                    }
+                }
+            }
+        }
         
-        return new Tile[0][0][0]; //TODO: Place holder
+        return meldList.toArray(new int[meldList.size()][]);
     }
     
     /**
@@ -25,10 +61,10 @@ public class HandAnalyzer { //Probably just put this in the Game class or even m
      * @param h
      * @return
      */
-    private static YakuTags[][] tagMelds(Tile[][] melds) {
-        YakuTags[][] tags = new YakuTags[melds.length+1][];    //TODO: I don't even know if this partial space allocation works.
+    public static MeldTag[][] tagMelds(Tile[][] melds) {
+        MeldTag[][] tags = new MeldTag[melds.length+1][];    // TODO: I don't even know if this partial space allocation works.
         
-        //TODO: Tag melds/hand to make yaku recognition easier. (i.e. sequence of chi, triple dragons)
+        // TODO: Tag melds/hand to make yaku recognition easier. (i.e. sequence of chi, triple dragons)
         
         return tags;
     }
@@ -37,12 +73,12 @@ public class HandAnalyzer { //Probably just put this in the Game class or even m
      * Outputs a list of yaku that are compliant with the given list of yaku tags.
      * //Consider storing the yaku logic as a table of boolean logic statements using the yaku tags.
      * 
-     * @param tags YakuTag list from tagMelds
+     * @param tags MeldTag list from tagMelds
      * @return String[] a string array of yaku names. //perhaps change this to Yaku enum with imbeded han values and yaku override information (e.g. ryanpeikou overriding chitoittsu).
      */
-    private static String[] listYaku(YakuTags[][] tags) {
+    public static String[] listYaku(MeldTag[][] tags) {
         
-        //TODO: Output applicable yaku based on tags.
+        // TODO: Output applicable yaku based on tags.
         
         return new String[0]; //TODO: Place Holder
     }
@@ -53,11 +89,11 @@ public class HandAnalyzer { //Probably just put this in the Game class or even m
      * 
      * @param h The Hand to be analyzed
      * @param d A tile object, the most recently drawn/called tile
-     * @return A string list of yaku
+     * @return A descriptive HandScore object
      */
-    public static String[] yakuAnal(Hand h, Tile d) {
-        Tile[][][] meldConfigs = meldConfig(h);
-        YakuTags[][][] tagSets = new YakuTags[meldConfigs.length][][];
+    public static HandScore analyze(Hand h, Tile d) {
+        Tile[][][] meldConfigs = null;
+        MeldTag[][][] tagSets = new MeldTag[meldConfigs.length][][];
         String[][] yakuSets = new String[meldConfigs.length][];
         
         int i = 0;
@@ -67,47 +103,36 @@ public class HandAnalyzer { //Probably just put this in the Game class or even m
             i++;
         }
         
-        //TODO: pick the most valuable yaku set
+        // TODO: pick the most valuable yaku set
         
-        return yakuSets[0]; //TODO: Place holder
+        return null; // TODO: Place holder
     }
     
-    //Main method for testing
+    // Main method for testing
     public static void main(String[] args) {
-        Tile[] initTiles = {new Tile(TileType.MAN, 1), new Tile(TileType.MAN, 2), new Tile(TileType.MAN, 3),
+        /*Tile[] initTiles = {new Tile(TileType.MAN, 1), new Tile(TileType.MAN, 2), new Tile(TileType.MAN, 3),
                             new Tile(TileType.SOU, 2), new Tile(TileType.SOU, 4), new Tile(TileType.SOU, 6), 
                             new Tile(TileType.PIN, 9), new Tile(TileType.PIN, 9), new Tile(TileType.PIN, 9), 
-                            new Tile(TileType.WIND, 2), new Tile(TileType.WIND, 2), new Tile(TileType.WIND, 2), new Tile(TileType.DRAGON, 2)};
+                            new Tile(TileType.WIND, 2), new Tile(TileType.WIND, 2), new Tile(TileType.WIND, 2),
+                            new Tile(TileType.DRAGON, 2), new Tile(TileType.DRAGON, 2)};*/
         
-        Hand hand = new Hand(initTiles);
-        Tile[][][] tags = meldConfig(hand);
+        Tile[] initTiles = {new Tile("1p"), new Tile("2p"), new Tile("3p"), 
+                            new Tile("4p"), new Tile("5p"), new Tile("6p"), 
+                            new Tile("6p"), new Tile("6p"), new Tile("6p"), 
+                            new Tile("2d"), new Tile("3d"), new Tile("1d"), 
+                            new Tile("1m"), new Tile("1s")};
+        
+        
+        int[][] melds = listMelds(initTiles);
+        
         
         // Print block for debugging.
-        for (Tile[][] meldConfig : tags) {
-            for (Tile[] meld : meldConfig) {
-                for (Tile tile : meld) {
-                    System.out.print(tile);
-                }
-                System.out.println();
+        for (int[] meld : melds) {
+            System.out.print("[");
+            for (int i : meld) {
+                System.out.print(initTiles[i] + ",");
             }
-            System.out.println();
+            System.out.println("]");
         }
-        
-        int[] iarr = new int[] {1,2,3};
-        System.out.println(iarr);;
-    }
-    
-    private enum YakuTags { //For use in the tagging process of tagHand() and listYaku()
-        //Meld specific tags (need to reference a meld)
-        MELDMAN, MELDPIN, MELDSOU, MELDSIMPLES, MELDTERMINALS, MELDHONORS, MELD1TERMINAL, MELDCHII, MELDPON, MELDKAN, MELDOPEN, MELDCLOSED, MELDYAKUHAI,
-        //Meld relationship tags (need to reference two or more melds;
-        MELDSAMERANK, MELDSAMESUIT, MELDSTRAIGHT,
-        //Pair specific tags
-        PAIRSIMPLES, PAIRTERMINALS, PAIRHONORS, PAIRYAKUHAI,
-        //General Hand Tags (meta tags derived from meld/pair tags)
-        HANDMAN, HANDPIN, HANDSOU, HANDSIMPLES, HANDTERMINALS, HANDHONORS, HANDCHII, HANDPON, HANDKAN, HANDOPEN, HANDCLOSED,
-        HANDNOMAN, HANDNOPIN, HANDNOSOU,
-        //Special exceptions
-        ALLPAIRS, KOKUSHI
     }
 }

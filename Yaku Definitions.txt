@@ -171,3 +171,51 @@ Opening hand Yakuman:
     4 melds and a pair upon a call before that player's first draw.
     Closed only
     value: limit
+    
+    Hand Analyze
+    meld detection
+        keep locked melds locked
+        find triples
+        find sequences
+        detect kokushi musou and chitoitsu
+    meld grouping
+        find a group of 4 distinct melds
+         such that a pair is left over
+    tag valid meld groupings
+        iterate over melds, big if block for each tag
+    Assign Yaku to tagged meld groupings
+        another big if block
+    pick best meld grouping based on yaku
+        Yaku score and override rules apply here
+
+
+Notes:
+
+method headers:
+
+public HandScore analyze(Hand hand, Tile draw)
+
+
+int[][] listMelds(Tile[] hand)
+
+int[][][] groupMelds(Tile[] hand, int[][] melds)
+
+tagMeldGroups(int[][][] meldGroups, Wind seat, Wind round)
+
+int scoreFu(YakuTag tags)
+
+String[] scoreHand(YakuTags[] tags)
+
+
+[X,X,X][X,X,X][X,X,X][X,X,X][X,X]
+[tag,tag][tag][tag,tag,tag,tag][tag][tag,tag]
+
+
+
+list all melds
+
+create valid meld configurations
+
+score hands returns (YakuTag[] list of yaku, int fu value)
+
+    

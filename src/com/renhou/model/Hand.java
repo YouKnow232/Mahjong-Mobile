@@ -13,12 +13,12 @@ class Hand {
     }
     
     void addMeld(Tile[] meld) {
-        //TODO: remove select tiles from hiddenHand
+        // TODO: remove select tiles from hiddenHand
         openMelds.add(meld);
     }
     
     void replace(Tile old, Tile replacement) {
-        //TODO
+        // TODO
     }
     
     public Tile[] getHandArr() {
@@ -29,13 +29,20 @@ class Hand {
         return (Tile[][]) openMelds.toArray();
     }
     
-    //TODO: Test code, pls delete later
+    // TODO: Test code, pls delete later
     public static void main(String[] args) {
-        int[] arr = new int[] {3,2,1,5,4,6};
+        Tile[] arr = new Tile[] {new Tile("2p"), new Tile("6p"), new Tile("9p"), new Tile("5m"), new Tile("1d"), new Tile("2w"), new Tile("5s")};
         Arrays.sort(arr);
-        for (int i : arr) {
+        for (Tile i : arr) {
             System.out.print(i);
             System.out.print(", ");
-        }
+        }System.out.println();
+        
+        Tile[] tileSet = Wall.riichiTileSet();
+        for (Tile i : tileSet) {
+            System.out.print(i);
+            System.out.print(", ");
+        }System.out.println();
+        
     }
 }

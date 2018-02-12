@@ -12,6 +12,6 @@ public class Game {
     public Game() {
         riichiPot = 0;
         honbaCounter = 0;
-        //TODO: Init the rest once their respective init method headers are finalized.
+        // TODO: Init the rest once their respective init method headers are finalized.
     }
 }
