@@ -193,29 +193,11 @@ Notes:
 
 method headers:
 
-public HandScore analyze(Hand hand, Tile draw)
+public HandScore analyze(Hand hand, Tile draw, Wind seat, Wind round, Yaku[] situationalYaku)
 
 
 int[][] listMelds(Tile[] hand)
 
 int[][][] groupMelds(Tile[] hand, int[][] melds)
 
-tagMeldGroups(int[][][] meldGroups, Wind seat, Wind round)
-
-int scoreFu(YakuTag tags)
-
-String[] scoreHand(YakuTags[] tags)
-
-
-[X,X,X][X,X,X][X,X,X][X,X,X][X,X]
-[tag,tag][tag][tag,tag,tag,tag][tag][tag,tag]
-
-
-
-list all melds
-
-create valid meld configurations
-
-score hands returns (YakuTag[] list of yaku, int fu value)
-
-    
+MeldTag[][] tagMeldGroups(int[][][] meldGroups, Wind seat, Wind round)

@@ -6,5 +6,13 @@ package com.renhou.model;
  *
  */
 public enum Wind {
-    EAST, SOUTH, NORTH, WEST;
+    EAST(1), SOUTH(2), WEST(3), NORTH(4);
+    
+    private int rank;
+    
+    private Wind(int rank) {
+        this.rank = rank;
+    }
+    
+    public int getRank() {return rank;}
 }

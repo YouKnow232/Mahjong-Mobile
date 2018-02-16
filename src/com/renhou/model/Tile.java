@@ -57,6 +57,25 @@ class Tile implements Comparable<Tile> {
     public int getRank()        {return this.rank;}
     public boolean isRed()      {return isRed;}
     
+    /**
+     * Like compareTo, but boolean and ignores isRed attribute.
+     * 
+     * @return true if rank and type are equal, else false
+     */
+    public boolean isCongruent(Tile t) {
+        return type == t.getType() && rank == t.getRank();
+    }
+    
+    /**
+     * outputs a new Tile object which can be used to detect dora tiles
+     * when called on dora indicator tiles.
+     * 
+     * @return a new Tile object with increased rank modulo that rank's capacity
+     */
+    public Tile doraTile()  {
+        return new Tile(type, (rank) % type.getRankCap() + 1);
+    }
+    
     
     @Override
     /**

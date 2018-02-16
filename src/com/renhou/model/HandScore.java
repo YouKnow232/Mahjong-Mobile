@@ -7,7 +7,7 @@ package com.renhou.model;
  * @author Chase
  *
  */
-public class HandScore {
+public class HandScore implements Comparable<HandScore>{
     private final Yaku[] yakuList;
     private final int fu;
     private final int han;
@@ -27,7 +27,29 @@ public class HandScore {
          
         this.han = hanTally;
         
-        this.basicPoints = (int)(fu * Math.pow(2, hanTally+2));
+        
+        if (han < 5) {
+            int rawBasicPoints = (int)(fu * Math.pow(2, hanTally+2));
+            
+            if (rawBasicPoints > 2000)
+                this.basicPoints = 2000;
+            else
+                this.basicPoints = rawBasicPoints;
+            
+        } else if (han < 6) {
+            this.basicPoints = 2000;
+        } else if (han < 8) {
+            this.basicPoints = 3000;
+        } else if (han < 11) {
+            this.basicPoints = 4000;
+        } else if (han < 13) {
+            this.basicPoints = 6000;
+        } else {
+            if (yakuList[0].isYakuman())
+                this.basicPoints = 8000 * yakuList.length;
+            else
+                this.basicPoints = 8000;
+        }
     }
     
     // Getters
@@ -35,4 +57,9 @@ public class HandScore {
     public int getFu() {return fu;}
     public int getHan() {return han;}
     public int getBasicPoints() {return basicPoints;}
+    
+    @Override
+    public int compareTo(HandScore hs) {
+        return new Integer(basicPoints).compareTo(new Integer(hs.getBasicPoints()));
+    }
 }

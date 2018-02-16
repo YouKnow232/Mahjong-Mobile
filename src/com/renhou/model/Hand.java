@@ -45,4 +45,25 @@ class Hand {
         }System.out.println();
         
     }
+    
+    @Override
+    public String toString() {  // TODO: Debugging interpretation, delete later
+        String output = "open melds: ";
+        
+        for (Tile[] meld : openMelds) {
+            output.concat("[");
+            for (Tile t : meld) {
+                output.concat(t.toString() + ", ");
+            }
+            output.concat("], ");
+        }
+        
+        output.concat("\n");
+        
+        for (Tile t : hiddenHand) {
+            output.concat(t.toString() + ", ");
+        }
+        
+        return output;
+    }
 }

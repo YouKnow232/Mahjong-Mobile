@@ -72,12 +72,10 @@ public enum Yaku {
     TSUUIISOU (13, 13),         // All honors
     CHIROUTOU (13, 13),         // All terminals
     RYUUIISOU (13, 13),         // All green
-    CHUURENPOUTOU (13,          // Nine gates
-            new Yaku[] {} ),
+    CHUURENPOUTOU (13),         // Nine gates
     JUNSEICHUURENPOUTOU(26,     // Nine gates (nine-sided)
             new Yaku[] {CHUURENPOUTOU}),
-    SUUKANTSU (13, 13,          // 4 Kans
-            new Yaku[] {} ),
+    SUUKANTSU (13, 13),         // 4 Kans
     TENHOU (13),                // Complete hand on dealer draw
     CHIIHOU (13),               // Complete hand on non-dealer draw (no calls beforehand)
     RENHOU (13);                // Complete hand on a discard within the first go-around (no calls beforehand)

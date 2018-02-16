@@ -1,9 +1,8 @@
 package com.renhou.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class HandAnalyzer { // Probably just put this in the Game class or even make it its own package in the future
+public class HandAnalyzer {
     
     /**
      * Compiles a list of all possible melds that can be made from the given list of tiles.
@@ -13,99 +12,189 @@ public class HandAnalyzer { // Probably just put this in the Game class or even 
      * @return A list of melds each represented by a list of 3 indices 
      */
     
-    // TODO: Optimize by adding for loop breaks
-    // TODO: Eliminate functionally identical melds
-    //      -prune melds afterwards
-    //      -detect from a pruned hand (only prune 4th identical tile for triplets)
-    public static int[][] listMelds(Tile[] hand) { 
+    // NOTE: Optimize duplicate pruning
+    private static int[][] listMelds(Tile[] hand) { 
         ArrayList<int[]> meldList = new ArrayList<int[]>();
         
         for (int i = 0; i < hand.length-2; i++) {
             for (int j = i+1; j < hand.length-1; j++) {
-                
-                if (hand[i].getType() == hand[j].getType() && // Triplet detection - second tile
-                    hand[i].getRank() == hand[j].getRank()) {
-                    
-                    for (int k = j+1; k < hand.length; k++) {
+                if (hand[i].getType() == hand[j].getType()) {   // TileType check, find new base tile if false
+                    if (hand[i].getRank() == hand[j].getRank()) {   // Triplet detection - second tile
                         
-                        if (hand[j].getType() == hand[k].getType() &&   // Triplet detection - third tile
-                            hand[j].getRank() == hand[k].getRank()) {
+                        for (int k = j+1; k < hand.length; k++) {
                             
-                            meldList.add(new int[] {i,j,k});
+                            if (hand[j].getType() == hand[k].getType() &&   // Triplet detection - third tile
+                                hand[j].getRank() == hand[k].getRank()) {
+                                
+                                meldList.add(new int[] {i,j,k});
+                            }
+                        }
+                        
+                    } else if (hand[i].getType() != TileType.WIND &&    // Sequence detection - second tile
+                               hand[i].getType() != TileType.DRAGON &&
+                               hand[i].getRank() == hand[j].getRank() - 1){
+                        
+                        for (int k = j+1; k < hand.length; k++) {
+                            
+                            if (hand[j].getType() == hand[k].getType() &&   // Sequence detection - third tile
+                                hand[j].getRank() == hand[k].getRank() - 1) {
+                                
+                                meldList.add(new int[] {i,j,k});
+                            }
                         }
                     }
-                    
-                } else if (hand[i].getType() != TileType.WIND &&    // Sequence detection - second tile
-                           hand[i].getType() != TileType.DRAGON &&
-                           hand[i].getType() == hand[j].getType() &&
-                           hand[i].getRank() == hand[j].getRank() - 1){
-                    
-                    for (int k = j+1; k < hand.length; k++) {
+                } else {    // TileType check, stop search for second meld tile and start on new base tile
+                    break;
+                }
+            }
+        }
+        
+        // post-detection pruning
+        ArrayList<Tile[]> meldListTiles = new ArrayList<Tile[]>();
+        
+        for (int[] meld : meldList) {   // Build tile representation of meldList
+            meldListTiles.add(new Tile[] {hand[meld[0]], hand[meld[1]], hand[meld[2]]});
+        }
+        
+        ArrayList<Integer> toRemove = new ArrayList<Integer>(); // Finding redundancies
+        for (int i = 0; i < meldListTiles.size() - 1; i++) {
+            if (!toRemove.contains(i)) {
+                for (int j = i+1; j < meldListTiles.size(); j++) {
+                    if (meldListTiles.get(i)[0].getType() == meldListTiles.get(j)[0].getType() &&
+                        meldListTiles.get(i)[0].getRank() == meldListTiles.get(j)[0].getRank() &&
+                        meldListTiles.get(i)[1].getType() == meldListTiles.get(j)[1].getType() &&
+                        meldListTiles.get(i)[1].getRank() == meldListTiles.get(j)[1].getRank() &&
+                        meldListTiles.get(i)[2].getType() == meldListTiles.get(j)[2].getType() &&
+                        meldListTiles.get(i)[2].getRank() == meldListTiles.get(j)[2].getRank()) {
                         
-                        if (hand[j].getType() == hand[k].getType() &&   // Sequence detection - third tile
-                            hand[j].getRank() == hand[k].getRank() - 1) {
-                            
-                            meldList.add(new int[] {i,j,k});
-                        }
+                        toRemove.add(j);
                     }
                 }
             }
         }
         
+        for (int i = toRemove.size() - 1; i >= 0; i--) {    // Pruning redundancies
+            meldList.remove(toRemove.get(i).intValue());
+        }
+        
+        
         return meldList.toArray(new int[meldList.size()][]);
     }
     
     /**
-     * Tags each meld and groups them in the same order as their input, then adds a group of Tags the hand as a whole.
+     * Outputs a list of valid groupings of melds such that for each grouping no tile is
+     * in two melds at once and the remaining two tiles form a pair.
      * 
-     * @param h
+     * Output will be converted to a 3D list of tiles from a 3D list of ints.
+     * The first dimension chooses between different groupings,
+     * the second dimension chooses between melds/the pair in the grouping,
+     * the third dimension chooses between each tile of the meld in the grouping.
+     * 
+     * @param hand The reference used to calculate melds
+     * @param melds A list of melds
+     * @return Meld groupings, each grouping ends with the indices of the pair.
+     */
+    private static Tile[][][] groupMelds(Tile[] hand, int[][] melds) {
+        // If no valid grouping exists make checks for kokushi and toitoi
+        
+        return null; // TODO: placeholder
+    }
+    
+    /**
+     * Attributes tags to the hand and the hands component melds/pair.
+     * 
+     * output is a 3D list of MeldTag enums.
+     * The first dimension chooses which grouping,
+     * the second dimension chooses which aspect of the hand the tags are referencing:
+     *      [meld1],[meld2],[meld3],[meld4],[pair],[whole hand]
+     * the third dimension chooses between each individual tag.
+     * 
+     * @param meldGroups Contains at least one valid combination of melds from the closed hand
+     * @param openMelds The fixed melds from the original hand
+     * @param seat The seat wind of the player
+     * @param round The round wind
+     * @return A set of tags per meld grouping
+     */
+    private static MeldTag[][][] tagMeldGroups(Tile[][][] meldGroups, Tile[][] openMelds, Tile draw, Wind seat, Wind round) {
+        
+        return null; // TODO: placeholder
+    }
+    
+    private static Yaku[] detectYaku(MeldTag[][] tags) {
+        
+        return null; // TODO: placeholder
+    }
+    
+    /**
+     * Counts fu from meld tags and winds. Output is given as a list of length 2.
+     * First item is the actual fu score, second item is pinfu indicator given as a 0 or a 1. 
+     * @param tags
      * @return
      */
-    public static MeldTag[][] tagMelds(Tile[][] melds) {
-        MeldTag[][] tags = new MeldTag[melds.length+1][];    // TODO: I don't even know if this partial space allocation works.
+    private static int[] countFu(MeldTag[][] tags) {
         
-        // TODO: Tag melds/hand to make yaku recognition easier. (i.e. sequence of chi, triple dragons)
-        
-        return tags;
+        return new int[] {-1, -1}; // TODO: placeholder
     }
     
     /**
-     * Outputs a list of yaku that are compliant with the given list of yaku tags.
-     * //Consider storing the yaku logic as a table of boolean logic statements using the yaku tags.
-     * 
-     * @param tags MeldTag list from tagMelds
-     * @return String[] a string array of yaku names. //perhaps change this to Yaku enum with imbeded han values and yaku override information (e.g. ryanpeikou overriding chitoittsu).
-     */
-    public static String[] listYaku(MeldTag[][] tags) {
-        
-        // TODO: Output applicable yaku based on tags.
-        
-        return new String[0]; //TODO: Place Holder
-    }
-    
-    /**
-     * ### This setup doesn't account for situational timing yaku such as houtei or ippatsu! ###
-     * ### These may be accounted for in the game logic before making the HandAnalyzer call. ###
+     * Analyzes a complete hand's contents, giving a list of yaku and counting fun and han
      * 
      * @param h The Hand to be analyzed
-     * @param d A tile object, the most recently drawn/called tile
+     * @param draw A tile object, the most recently drawn/called tile
+     * @param dora A list of Tile objects that are equivalent to the dora tile
+     * @param seat The seat wind of the player whose hand is being scored
+     * @param round The round wind
      * @return A descriptive HandScore object
      */
-    public static HandScore analyze(Hand h, Tile d) {
-        Tile[][][] meldConfigs = null;
-        MeldTag[][][] tagSets = new MeldTag[meldConfigs.length][][];
-        String[][] yakuSets = new String[meldConfigs.length][];
+    public static HandScore analyze(Hand h, Tile draw, Tile[] dora, Wind seat, Wind round, Yaku[] situationalYaku) {
+        boolean isOpen = (h.getMelds().length > 0);
+        Tile[] handArr = h.getHandArr();
+        Tile[][] fixedMelds = h.getMelds();
+        int[][] closedMelds = listMelds(handArr);
+        Tile[][][] closedMeldGroups = groupMelds(handArr, closedMelds);
+        MeldTag[][][] tags = tagMeldGroups(closedMeldGroups, fixedMelds, draw, seat, round);
         
-        int i = 0;
-        for (Tile[][] meldConfig : meldConfigs) {
-            tagSets[i] = tagMelds(meldConfig);
-            yakuSets[i] = listYaku(tagSets[i]);
-            i++;
+        
+        // Detects yaku in each meld grouping and determines the best scoring grouping
+        Yaku[][] yakuLists = new Yaku[tags.length][];
+        int[] hanValues = new int[tags.length];
+        
+        for (int i = 0; i < tags.length; i++) {
+            yakuLists[i] = detectYaku(tags[i]);
+            int total = 0;
+            for (Yaku y : yakuLists[i]) {
+                if (isOpen)
+                    total += y.getOpenHanValue();
+                else
+                    total += y.getClosedHanValue();
+            }
+            hanValues[i] = total;
         }
         
-        // TODO: pick the most valuable yaku set
+        int bestIndex = 0;
+        int bestHanValue = 0;
+        for (int i = 0; i < tags.length; i++) {
+            if (hanValues[i] > bestHanValue) {
+                bestIndex = i;
+                bestHanValue = hanValues[i];
+            }
+        }
         
-        return null; // TODO: Place holder
+        // Count fu
+        int[] fuOutput = countFu(tags[bestIndex]);
+        int fu = fuOutput[0];
+        
+        // Compile yaku
+        Yaku[] finalYakuList = new Yaku[yakuLists[bestIndex].length + situationalYaku.length + fuOutput[1]];
+        int i = 0;
+        for (Yaku y : yakuLists[bestIndex])
+            finalYakuList[i++] = y;
+        for (Yaku y : situationalYaku)
+            finalYakuList[i++] = y;
+        if (fuOutput[1] > 1)
+            finalYakuList[i] = Yaku.PINFU;
+        
+        return new HandScore(finalYakuList, fu, isOpen);
     }
     
     // Main method for testing
@@ -127,12 +216,14 @@ public class HandAnalyzer { // Probably just put this in the Game class or even 
         
         
         // Print block for debugging.
+        int x = 0;
         for (int[] meld : melds) {
-            System.out.print("[");
+            System.out.print(x+": [");
             for (int i : meld) {
                 System.out.print(initTiles[i] + ",");
             }
             System.out.println("]");
+            x++;
         }
     }
 }
