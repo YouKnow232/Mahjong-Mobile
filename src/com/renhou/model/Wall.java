@@ -17,10 +17,14 @@ class Wall {
         doraCount = 1;
     }
     
-    public Tile draw() {
+    Tile draw() {
         Tile t = wall.get(wall.size()-1);
         wall.remove(wall.size()-1);
         return t;
+    }
+    
+    void increaseDora() {
+        doraCount++;
     }
     
     public Tile[] getDora() {
@@ -31,7 +35,7 @@ class Wall {
         return output;
     }
     
-    public Tile[] getUradora() {
+    Tile[] getUradora() {
         Tile[] output = new Tile[doraCount];
         for (int i = 0; i < doraCount; i++) {
             output[i] = wall.get(5 + i*2);
@@ -40,8 +44,12 @@ class Wall {
         
     }
     
-    public Tile[] getWallArr() {
+    Tile[] getWallArr() {
         return wall.toArray(new Tile[wall.size()]);
+    }
+    
+    int getDoraCount() {
+        return doraCount;
     }
     
     /**
