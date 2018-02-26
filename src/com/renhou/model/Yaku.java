@@ -35,7 +35,7 @@ public enum Yaku {
     SANSHOKUDOUJUN (2, 1),      // Three color straight
     ITTSUU (2, 1),              // Straight 1 to 9
     RYANPEIKOU (3,              // Pair of double sequence
-            new Yaku[] {CHIITOITSU} ),
+            new Yaku[] {IIPEIKOU} ),
     
     // Based on triplets/quads
     TOITOI (2, 2),              // All triplets 
@@ -67,8 +67,7 @@ public enum Yaku {
             new Yaku[] {SUUANKOU}),
     DAISANGEN (13, 13),         // Big three dragons
     SHOUSUUSHI (13, 13),        // Little four winds
-    DAISUUSHI (26, 26,          // Big four winds
-            new Yaku[] {SHOUSUUSHI}),
+    DAISUUSHI (26, 26),         // Big four winds
     TSUUIISOU (13, 13),         // All honors
     CHIROUTOU (13, 13),         // All terminals
     RYUUIISOU (13, 13),         // All green
@@ -111,18 +110,10 @@ public enum Yaku {
         this(hanClosed, 0, new Yaku[] {});
     }
     
-    
-    public int getClosedHanValue() {
-        return hanClosed;
-    }
-    
-    public int getOpenHanValue() {
-        return hanOpen;
-    }
-    
-    public Yaku[] getOverrideList() {
-        return yakuOverrides;
-    }
+    // Getters
+    public int getClosedHanValue() {return hanClosed;}
+    public int getOpenHanValue() {return hanOpen;}
+    public Yaku[] getOverrideList() {return yakuOverrides;}
     
     public boolean isYakuman() {
         if (hanClosed > 12)

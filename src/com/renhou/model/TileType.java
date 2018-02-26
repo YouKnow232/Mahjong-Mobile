@@ -1,5 +1,12 @@
 package com.renhou.model;
 
+/**
+ * Wind order is [East, South, West, North]
+ * Dragon order is [Red, Green, Blue]
+ * 
+ * @author Chase
+ *
+ */
 public enum TileType {
     MAN(9, false), PIN(9, false), SOU(9, false),
     WIND(4, true), DRAGON(3, true);
@@ -13,5 +20,5 @@ public enum TileType {
     }
     
     public int getRankCap() { return rankCap; }
-    public boolean isHonor() {return isHonor; }
+    public boolean isHonor() { return isHonor; }
 }

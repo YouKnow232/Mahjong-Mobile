@@ -198,6 +198,11 @@ public HandScore analyze(Hand hand, Tile draw, Wind seat, Wind round, Yaku[] sit
 
 int[][] listMelds(Tile[] hand)
 
-int[][][] groupMelds(Tile[] hand, int[][] melds)
+Tile[][][] groupMelds(Tile[] hand, int[][] melds)
 
 MeldTag[][] tagMeldGroups(int[][][] meldGroups, Wind seat, Wind round)
+
+Tile[] findPair(Tile[] hand, int[][] melds)
+
+
+meldListTiles replace with Groupings

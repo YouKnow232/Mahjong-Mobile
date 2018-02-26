@@ -5,6 +5,7 @@ else:
 10 fu for closed ron
 2 fu for tsumo (not counted for pinfu hands)
 2 fu for open pinfu (just to bump up to 30 fu, could be 1-10 fu)
+2 fu for yakuhai pair
 
 melds:
             simple  honor/terminal

@@ -6,27 +6,60 @@ import java.util.Arrays;
 class Hand {
     private ArrayList<Tile> hiddenHand;
     private ArrayList<Tile[]> openMelds;
+    private ArrayList<Tile> borrowedTiles;
     
     Hand(Tile[] tiles) {
         hiddenHand = new ArrayList<Tile>(Arrays.asList(tiles));
         openMelds = new ArrayList<Tile[]>();
+        borrowedTiles = new ArrayList<Tile>();
     }
     
-    void addMeld(Tile[] meld) {
-        // TODO: remove select tiles from hiddenHand
-        openMelds.add(meld);
+    Hand () {
+        this(new Tile[] {});
     }
     
-    void replace(Tile old, Tile replacement) {
-        // TODO
+    void callMeld(Tile[] tiles, Tile t) {
+        if (t != null) {
+            Tile[] meld = new Tile[tiles.length+1];
+            for (int i = 0; i < tiles.length; i++)
+                meld[i] = tiles[i];
+            meld[tiles.length] = t;
+            borrowedTiles.add(t);
+        } else {
+            openMelds.add(tiles);
+        }
+        
+        for (Tile tile : tiles) {
+            hiddenHand.remove(tile);
+        }
+    }
+    
+    void callMeld(Tile[] tiles) {
+        callMeld(tiles, null);
+    }
+    
+    void discard(Tile t) {
+        hiddenHand.remove(t);
+    }
+    
+    void draw(Tile t) {
+        hiddenHand.add(t);
+    }
+    
+    public boolean isBorrowed(Tile t) {
+        return borrowedTiles.contains(t);
     }
     
     public Tile[] getHandArr() {
-        return (Tile[]) hiddenHand.toArray();
+        return hiddenHand.toArray(new Tile[hiddenHand.size()]);
     }
     
     public Tile[][] getMelds() {
-        return (Tile[][]) openMelds.toArray();
+        return openMelds.toArray(new Tile[openMelds.size()][]);
+    }
+    
+    public Tile[] getBorrowedTiles() {
+        return borrowedTiles.toArray(new Tile[borrowedTiles.size()]);
     }
     
     // TODO: Test code, pls delete later

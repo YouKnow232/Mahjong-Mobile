@@ -7,15 +7,8 @@ class Player {
     
     Player(String name, int score) {
         this.name = name;
-        this.score = score = 25000;
-        hand = null;
-    }
-    
-    // Should probably but all logic in the Game class
-    void drawHand(Tile[] tiles) {
-        if (hand == null) {
-            hand = new Hand(tiles);
-        }
+        this.score = score;
+        hand = new Hand();
     }
     
     int scoreAdjust(int adjustment) {
@@ -23,11 +16,7 @@ class Player {
         return score;
     }
     
-    public int getScore() {
-        return score;
-    }
-    
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public int getScore() { return score; }
+    public Hand getHand() { return hand; }
 }
